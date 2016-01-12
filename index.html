@@ -1,0 +1,122 @@
+<!DOCTYPE HTML>
+<html ng-app='sense'>
+
+<head>
+	<title>Simple Display</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css">
+	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<!-- script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script -->
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+	<script src="main.js"></script>
+
+</head>
+
+<body>
+	<div data-role="page" id="one">
+		<div data-role="header">
+			<h1>Sense Data Display</h1>
+		</div>
+		<div role="main" class="ui-content" ng-controller="DataController as ctrl">
+			<div id="status">status unknown</div>
+			<hr/>
+			<form name="form" novalidate>
+				<input type="button" ng-model="btn_update" value="Update" ng-click="sendMessage()" />
+
+				<div class="ui-field-contain">
+					<label for="auto-refresh">Refresh Data: </label>
+					<input data-role="flipswitch" ng-model="autorefresh" type="checkbox"
+					ng-change="checkAutoRefresh()">
+				</div>
+				<div class="ui-field-contain">
+					<label for="sense-tempp">Temperature from pressure:</label>
+					<input name="sense-tempp" ng-model="data.tempp" type="text">
+				</div>
+
+				<div class="ui-field-contain">
+					<label for="sense-temph">Temperature from humidity:</label>
+					<input name="sense-temph" type="text">
+				</div>
+
+
+				<div class="ui-field-contain">
+					<label for="sense-humidity">Humidity:</label>
+					<input name="sense-humidity" type="text">
+				</div>
+				<div class="ui-field-contain">
+					<label for="sense-pressure">Pressure:</label>
+					<input name="sense-pressure" type="text">
+				</div>
+
+				<h3 class="ui-bar ui-bar-a">Orientation Data</h3>
+				<div class="ui-body">
+					<div class="ui-field-contain">
+						<label for="sense-pitch">Pitch:</label>
+						<input name="sense-pitch" type="text">
+					</div>
+					<div class="ui-field-contain">
+						<label for="sense-roll">Roll:</label>
+						<input name="sense-roll" type="text">
+					</div>
+					<div class="ui-field-contain">
+						<label for="sense-yaw">Yaw:</label>
+						<input name="sense-yaw" type="text">
+					</div>
+				</div>
+
+				<h3 class="ui-bar ui-bar-a">Magnetometer Data</h3>
+				<div class="ui-body">
+					<div class="ui-field-contain">
+						<label for="sense-magx">Mag. X:</label>
+						<input name="sense-magx" type="text">
+					</div>
+					<div class="ui-field-contain">
+						<label for="sense-magy">Mag. Y:</label>
+						<input name="sense-magy" type="text">
+					</div>
+					<div class="ui-field-contain">
+						<label for="sense-magz">Mag. Z:</label>
+						<input name="sense-magz" type="text">
+					</div>
+				</div>
+
+				<h3 class="ui-bar ui-bar-a">Acceleration Data</h3>
+				<div class="ui-body">
+					<div class="ui-field-contain">
+						<label for="sense-accx">Acc. X:</label>
+						<input name="sense-accx" type="text">
+					</div>
+					<div class="ui-field-contain">
+						<label for="sense-accy">Acc. Y:</label>
+						<input name="sense-accy" type="text">
+					</div>
+					<div class="ui-field-contain">
+						<label for="sense-accz">Acc. Z:</label>
+						<input name="sense-accz" type="text">
+					</div>
+				</div>
+
+				<h3 class="ui-bar ui-bar-a">Gyroscope Data</h3>
+				<div class="ui-body">
+					<div class="ui-field-contain">
+						<label for="sense-gyrox">Gyro. X:</label>
+						<input name="sense-gyrox" type="text">
+					</div>
+					<div class="ui-field-contain">
+						<label for="sense-gyroy">Gyro. Y:</label>
+						<input name="sense-gyroy" type="text">
+					</div>
+					<div class="ui-field-contain">
+						<label for="sense-gyroz">Gyro. Z:</label>
+						<input name="sense-gyroz" type="text">
+					</div>
+				</div>
+
+				<input type="button" ng-model="btn_update" value="Update" ng-click="sendMessage()" />
+			</form>
+		</div>
+	</div>
+</body>
+
+</html>

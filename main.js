@@ -11,15 +11,15 @@
 	wsUriC += "//" + loc.host + "/ws/sensedata";
 	
 	angular.module('sense', [])
-	.controller('DataController', ['$window', '$scope', '$log', function($scope, $window, $log){
+	.controller('DataController', ['$window', '$scope', '$log', function($window, $scope, $log){
 		var self = this;
-		self.data = {
-			tempp: '20'
-		};
-		self.intid = null;
-		$scope.autorefresh = true;
 		
-		$scope.data = self.data;
+		$scope.data = {
+			autorefresh: false
+		};
+		
+		self.data = $scope.data;
+		self.intid = null;
 		
 		var ws;
 		
@@ -66,6 +66,8 @@
 			}
 		};
 		
+		
+		$log.debug($scope);
 	}]);
 
 })(jQuery); 

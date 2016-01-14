@@ -5,12 +5,24 @@
 	<title>Simple Display</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css">
-	<script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+	
+<style>
+.ng-invalid.ng-dirty,
+.ng-invalid-required {
+border-color:#FA787E!important;
+}
+
+.ng-valid.ng-dirty {
+border-color:#78FA89!important;
+}
+</style>
+
+	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css">
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
 	
 	<!-- important load jquery mobile after angularjs -->
-	<script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
+	<!-- script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script -->
 	<script src="main.js"></script>
 
 </head>
@@ -31,7 +43,8 @@
 					</div></div>
 					<div class="ui-block-b"><div class="ui-field-contain">
 						<label for="refresh_interval">every seconds:</label>
-						<input ng-model="autorefresh.interval" name="refresh_interval" size="5" type="text" >	
+						<input ng-model="autorefresh.interval" name="refresh_interval" size="5" type="number" 
+						min="1" required>
 					</div></div>
 				</div><!-- /grid-a -->
 				<hr/>

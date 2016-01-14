@@ -17,17 +17,33 @@
 	.factory('senseService', ['$log', '$window', '$q', '$rootScope', 
 	function($log, $window, $q, $rootScope){
 		var ws;
-		var defer;
+		var reqs = {};
 		
 		var listener = function(msg){
-			var data = JSON.parse(msg.data);
-			$log.debug('resolve defer...');
-			$rootScope.$apply(defer.resolve(data));
+			$log.debug(msg);
+
+			msg = JSON.parse(msg);
+			$log.debug(msg);
+			
+			var data = msg.data;
+			
+			if( reqs.hasOwnProperty(msg.callbackid) ) {
+				$rootScope.$apply(reqs[msg.callbackid].defer.resolve(data));
+				delete reqs[msg.callbackid];
+			}
 		};
 		
 		var sendMessage = function(request) {
+			request = request || {};
 			$log.debug('sending message...');
-			defer = $q.defer();
+			var defer = $q.defer();
+			var callbackid = new Date().getTime();
+			reqs[callbackid] = {
+				time: new Date(),
+				defer: defer
+			};
+			
+			request.callbackid = callbackid;
 			
 			ws.send(JSON.stringify(request));
 			return defer.promise;
@@ -38,7 +54,7 @@
 			ws = new WebSocket(wsUriC);
 			
 			ws.onmessage = function(msg) {
-				listener(msg);
+				listener(msg.data);
 			};
 			ws.onopen = function() {
 				$("#status").html("connected");
@@ -95,7 +111,6 @@
 		
 		$scope.reloadData = function(){
 			senseService.load().then(function(data){
-				$log.debug(data);
 				$scope.data = data;
 			});
 		};

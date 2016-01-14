@@ -1,6 +1,6 @@
-(function($) {
+(function () {
 	"use strict";
-	
+
 	var loc = window.location;
 	var wsUriC = "";
 	if (loc.protocol === "https:") {
@@ -8,99 +8,81 @@
 	} else {
 		wsUriC = "ws:";
 	}
-	wsUriC += "//192.168.0.10:1880/ws/sensedata";
-	
-	angular.module('sense', [])
-	.factory('senseService', ['$log', '$window', '$q', '$rootScope', 
-	function($log, $window, $q, $rootScope){
-		var ws;
-		var defer;
-		
-		var listener = function(msg){
+	wsUriC += "//127.0.0.1:1880/ws/sensedata";
+	var ws;
+	function wsConnectC() {
+		ws = new WebSocket(wsUriC);
+		ws.onmessage = function (msg) {
 			var data = JSON.parse(msg.data);
-			$log.debug('resolve defer...');
-			$rootScope.$apply(defer.resolve(data));
+			console.log(data);
+
+			$('[name=sense-tempp]').val(data.temp_p);
+			$('[name=sense-temph]').val(data.temp_h);
+
+			$('[name=sense-humidity]').val(data.humidity);
+			$('[name=sense-pressure]').val(data.pressure);
+
+			$('[name=sense-roll]').val(data.roll);
+			$('[name=sense-pitch]').val(data.pitch);
+			$('[name=sense-yaw]').val(data.yaw);
+
+			$('[name=sense-magx]').val(data.mag_x);
+			$('[name=sense-magy]').val(data.mag_y);
+			$('[name=sense-magz]').val(data.mag_z);
+
+			$('[name=sense-accx]').val(data.acc_x);
+			$('[name=sense-accy]').val(data.acc_y);
+			$('[name=sense-accz]').val(data.acc_z);
+
+			$('[name=sense-gyrox]').val(data.gyro_x);
+			$('[name=sense-gyroy]').val(data.gyro_y);
+			$('[name=sense-gyroz]').val(data.gyro_z);
+
 		};
-		
-		var sendMessage = function(request) {
-			$log.debug('sending message...');
-			defer = $q.defer();
-			
-			ws.send(JSON.stringify(request));
-			return defer.promise;
+		ws.onopen = function () {
+			$("#status").html("connected");
 		};
-		
-		var init = function(){
-			$log.debug("connect", wsUriC);
-			ws = new WebSocket(wsUriC);
-			
-			ws.onmessage = function(msg) {
-				listener(msg);
-			};
-			ws.onopen = function() {
-				$("#status").html("connected");
-				$log.debug("connected");
-			};
-			ws.onclose = function() {
-				$("#status").html("not connected");
-			};
-			ws.onerror = function(event) {
-				$log.debug(event.data);
-			};
-			
-			$window.onbeforeunload = function() {
-				ws.close();
-			};
+		ws.onclose = function () {
+			$("#status").html("not connected");
+			setTimeout(wsConnectC, 1000);
 		};
-		
-		return {
-			load: function(request){
-				return sendMessage(request);
-			},
-			init: function(){
-				init();
-			}
+		ws.onerror = function (event) {
+			console.log(event);
 		};
-	}])
-	.controller('DataController', ['senseService', '$window', '$scope', '$log', '$q', 
-	function(senseService, $window, $scope, $log, $q, $rootScope){
-		var self = this;
-		$scope.autorefresh = false;
-		self.intid = null;
+	}
+
+
+	function sendMessage() {
+		// send message back to page in simple JSON format
+		// example {“part1”:”Hello”,”part2”:”50”}
 		
-		$log.debug($scope);
-		$scope.data = {};
+		ws.send("");
+	} // end sendMessage
+	
+	window.onbeforeunload = function () {
+		ws.close();
+	};
+
+	$(function () {
 		
-		// [fix] jquery mobile flipswitch event not fired by angularjs
-		$('[name=autorefresh]').change(function(){
-			$scope.autorefresh = $(this).is(':checked');
+		// connect to websocket
+		wsConnectC();
+
+		$('[name=btn_update]').click(function () {
+			sendMessage();
 		});
-		
-		$scope.checkAutoRefresh = function(){
-			if( $scope.autorefresh ) {
-				self.intid = window.setInterval(function() {
-					$scope.reloadData();
+
+		var refresh;
+		$('[name=auto-refresh]').on('change', function () {
+			if ($(this).is(':checked')) {
+				refresh = window.setInterval(function () {
+					sendMessage();
 				}, 5000);
 			} else {
-				window.clearInterval(self.intid);
+				window.clearInterval(refresh);
 			}
-		};
-		
-		$scope.reloadData = function(){
-			senseService.load().then(function(data){
-				$log.debug(data);
-				$scope.data = data;
-			});
-		};
-		
-		// ng-change should be the way to go, 
-		// but because jquery mobile flipswitch change event 
-		// is not fired when the user click the switch, $watch is used.
-		$scope.$watch('autorefresh', $scope.checkAutoRefresh);
+		}).change();
 
-	}])
-	.run(['senseService', function (senseService){
-		senseService.init();
-	}]);
+	});
 
-})(jQuery); 
+})(jQuery);

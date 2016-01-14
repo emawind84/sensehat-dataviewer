@@ -5,12 +5,12 @@
 	<title>Simple Display</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css">
-	<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.css">
+	<script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
 	
 	<!-- important load jquery mobile after angularjs -->
-	<script src="https://ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/jquerymobile/1.4.5/jquery.mobile.min.js"></script>
 	<script src="main.js"></script>
 
 </head>
@@ -24,13 +24,20 @@
 			<div id="status">status unknown</div>
 			<hr/>
 			<form name="form" novalidate>
+				<div class="ui-grid-a">
+					<div class="ui-block-a"><div class="ui-field-contain">
+						<label for="autorefresh">Auto refresh: </label>
+						<input ng-model="autorefresh.check" data-role="flipswitch" name="autorefresh" type="checkbox" >
+					</div></div>
+					<div class="ui-block-b"><div class="ui-field-contain">
+						<label for="refresh_interval">every seconds:</label>
+						<input ng-model="autorefresh.interval" name="refresh_interval" size="5" type="text" >	
+					</div></div>
+				</div><!-- /grid-a -->
+				<hr/>
+
 				<input type="button" ng-model="btn_update" value="Update" ng-click="reloadData()" />
 
-				<div class="ui-field-contain">
-					<label for="auto-refresh">Refresh Data: </label>
-					<input data-role="flipswitch" name="autorefresh" type="checkbox"
-					ng-model="autorefresh" >
-				</div>
 				<div class="ui-field-contain">
 					<label for="sense-tempp">Temperature from pressure:</label>
 					<input ng-model="data.temp_p" name="sense-tempp" type="text">

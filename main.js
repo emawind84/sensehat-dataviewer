@@ -8,7 +8,7 @@
 	} else {
 		wsUriC = "ws:";
 	}
-	wsUriC += "//192.168.0.10:1880/ws/sensedata";
+	wsUriC += "//" + loc.host + "/ws/sensedata";
 	
 	angular.module('sense', [])
 	.factory('senseService', ['$log', '$window', '$q', '$rootScope', 
@@ -65,7 +65,10 @@
 	.controller('DataController', ['senseService', '$window', '$scope', '$log', '$q', 
 	function(senseService, $window, $scope, $log, $q, $rootScope){
 		var self = this;
-		$scope.autorefresh = false;
+		$scope.autorefresh = {
+			check: false,
+			interval: 5
+		};
 		self.intid = null;
 		
 		$log.debug($scope);
@@ -73,11 +76,11 @@
 		
 		// [fix] jquery mobile flipswitch event not fired by angularjs
 		$('[name=autorefresh]').change(function(){
-			$scope.autorefresh = $(this).is(':checked');
+			$scope.autorefresh.check = $(this).is(':checked');
 		});
 		
 		$scope.checkAutoRefresh = function(){
-			if( $scope.autorefresh ) {
+			if( $scope.autorefresh.check ) {
 				self.intid = window.setInterval(function() {
 					$scope.reloadData();
 				}, 5000);
@@ -96,7 +99,7 @@
 		// ng-change should be the way to go, 
 		// but because jquery mobile flipswitch change event 
 		// is not fired when the user click the switch, $watch is used.
-		$scope.$watch('autorefresh', $scope.checkAutoRefresh);
+		$scope.$watch('autorefresh.check', $scope.checkAutoRefresh);
 
 	}])
 	.run(['senseService', function (senseService){

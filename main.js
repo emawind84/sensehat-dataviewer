@@ -12,8 +12,8 @@
 	wsUriC += "//" + wsHost + "/ws/sensedata";
 	
 	angular.module('sense', [])
-	.factory('senseService', ['$log', '$window', '$q', '$rootScope', 
-	function($log, $window, $q, $rootScope){
+	.factory('senseService', ['$log', '$window', '$q', '$rootScope', '$timeout', 
+	function($log, $window, $q, $rootScope, $timeout){
 		var ws;
 		var reqs = {};
 		
@@ -43,7 +43,6 @@
 			};
 			
 			request.callbackid = callbackid;
-			
 			ws.send(JSON.stringify(request));
 			return defer.promise;
 		};
@@ -61,6 +60,7 @@
 			};
 			ws.onclose = function() {
 				$("#status").html("not connected");
+				$timeout(init, 1000);
 			};
 			ws.onerror = function(event) {
 				$log.debug(event.data);

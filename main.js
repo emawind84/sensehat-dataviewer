@@ -8,10 +8,8 @@
 	} else {
 		wsUriC = "ws:";
 	}
-	wsUriC += "//" + loc.host + "/ws/sensedata";
-	
-	// for testing
-	wsUriC = "wss://raspi.emawind.com/ws/sensedata";
+	var wsHost = "raspi.emawind.com";
+	wsUriC += "//" + wsHost + "/ws/sensedata";
 	
 	angular.module('sense', [])
 	.factory('senseService', ['$log', '$window', '$q', '$rootScope', 
@@ -21,6 +19,7 @@
 		
 		var listener = function(msg){
 			$log.debug(msg);
+			$log.debug(reqs);
 
 			msg = JSON.parse(msg);
 			$log.debug(msg);

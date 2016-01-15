@@ -10,3 +10,6 @@ Branches available:
 The WebSocket is created with Node-RED and the data logger is a Python script, 
 I will leave their implementation files for more understanding.
 I might write some tutorial about them later.
+
+.. note::
+  Good tutorial for implementing WebSocket client with AngularJS `here <http://clintberry.com/2013/angular-js-websocket-service/>`_

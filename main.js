@@ -8,7 +8,9 @@
 	} else {
 		wsUriC = "ws:";
 	}
-	wsUriC += "//127.0.0.1:1880/ws/sensedata";
+	var wsHost = "raspi.emawind.com";
+	wsUriC += "//" + wsHost + "/ws/sensedata";
+	
 	var ws;
 	function wsConnectC() {
 		ws = new WebSocket(wsUriC);

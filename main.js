@@ -24,6 +24,7 @@
 		};
 		
 		var sendMessage = function(request) {
+			request = request || {};
 			$log.debug('sending message...');
 			defer = $q.defer();
 			
